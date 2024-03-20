@@ -1,7 +1,29 @@
+<script>
+    (function($) {
+
+"use strict";
+
+var fullHeight = function() {
+
+    $('.js-fullheight').css('height', $(window).height());
+    $(window).resize(function(){
+        $('.js-fullheight').css('height', $(window).height());
+    });
+
+};
+fullHeight();
+
+$('#sidebarCollapse').on('click', function () {
+  $('#sidebar').toggleClass('active');
+});
+
+})(jQuery);
+</script>
 
 <style>
 
 </style>
+
 
 <main class="main">
 
@@ -9,10 +31,10 @@
   
     <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar" class="bg-dark">
-      <!--<div class="custom-menu">
+      <div class="custom-menu">
         <button type="button" id="sidebarCollapse" class="btn btn-primary">
         </button>
-      </div>-->
+      </div>
 
   
       <div id="img" class="img bg-wrap text-center py-4 bg-secondary">
@@ -34,14 +56,12 @@
         <li class="active" (click)="goToPage('services')">
           <a href="#"><span class="fa fa-cog mr-3"></span> About</a>
         </li>
+        
+        
         <li class="active" (click)="goToPage('logout')">
-          <a href="#"><span class="fa fa-support mr-3"></span>Log Out</a>
-        </li>
-        <!--
-            <li class="active" (click)="goToPage('sing-out')">
           <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
         </li>
-        -->
+        
       </ul>
 
     </nav>
@@ -94,10 +114,10 @@
         <div class="card">
           <div class="card-header bg-secondary text-white input-group   ">
             <h3 style="text-align: initial;">Liste des information</h3>
-           <!--<div class="input-group col-md-3" style="justify-content: end;">
-              <input class="form-control" type="text" name="search" style="left: 510px;">
-              <button class="btn btn-primary bg-white text-dark" type="submit" value="Recherche" style="right: 60px; position: fixed;">search</button>
-            </div> --> 
+                    <div class="input-group col-md-2 justify-content-end " style="justify-content: end;">
+                        <input class="form-control " type="date" name="search" >
+                    </div>
+           
           </div>
          </div>
          
