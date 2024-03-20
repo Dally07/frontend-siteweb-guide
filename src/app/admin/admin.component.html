@@ -8,14 +8,14 @@
 	
   
     <div class="wrapper d-flex align-items-stretch">
-    <nav id="sidebar">
+    <nav id="sidebar" class="bg-dark">
       <!--<div class="custom-menu">
         <button type="button" id="sidebarCollapse" class="btn btn-primary">
         </button>
       </div>-->
 
   
-      <div id="img" class="img bg-wrap text-center py-4">
+      <div id="img" class="img bg-wrap text-center py-4 bg-secondary">
         <div class="user-logo">
           <div class="img"></div>
           <h3>CENTRE VALBIO</h3>
@@ -23,19 +23,19 @@
       </div>
       <ul class="list-unstyled components mb-5">
         <li class="active" (click)="goToPage('accueil')">
-          <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+          <a href="#"><span class="fas fa-home mr-3"></span> Home</a>
         </li>
         <li class="active" (click)="goToPage('inscription')">
-          <a href="#"><span class="fa fa-gift mr-3"></span>Inscription</a>
+          <a href="#"><span class="fa fa-gift mr-3"></span>Add Information</a>
         </li>
         <li class="active" (click)="goToPage('liste-eleves')">
-          <a href="#"><span class="fa fa-trophy mr-3"></span>Liste des eleves</a>
+          <a href="#"><span class="fa fa-trophy mr-3"></span>List of Information</a>
         </li>
         <li class="active" (click)="goToPage('services')">
-          <a href="#"><span class="fa fa-cog mr-3"></span> Services</a>
+          <a href="#"><span class="fa fa-cog mr-3"></span> About</a>
         </li>
         <li class="active" (click)="goToPage('logout')">
-          <a href="#"><span class="fa fa-support mr-3"></span>Suivie</a>
+          <a href="#"><span class="fa fa-support mr-3"></span>Log Out</a>
         </li>
         <!--
             <li class="active" (click)="goToPage('sing-out')">
@@ -57,68 +57,34 @@
         
               <!--modal header-->
               <div class="card">
-                <div class="card-header bg-primary text-white ">
-                  <h3 style="text-align: center;">fiche de renseignement</h3>
+                <div class="card-header bg-secondary text-white ">
+                  <h3 style="text-align: center;">Create your Information here</h3>
                 </div>
                </div><br>
               <form #userForm="ngForm">
                 <div class="row">
                     <div class="col-md-8">
-                      <label for="nom" class="form-label">Nom</label>
-                      <input type="text" name="nom"  class="form-control">
+                      <label for="nom" class="form-label">Title</label>
+                      <input type="text" name="nom"  class="form-control" placeholder="title of your information...">
                     </div>
                 </div>
         
                   <div class="row">
-                    <div class="col-md-8">
-                      <label for="prenom" class="form-label">prenom</label>
-                      <input type="text" name="PRENOM" class="form-control" >
+                    <div class="mb-3 mt-3">
+                      <label for="comment">Content</label>
+                      <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
                     </div>
-                  </div>
+                  </div><br>
 
-                  <div class="row">
-                    <div class="col-md-8">
-                      <label for="date" class="form-label">Date de Naissance</label>
-                      <input type="date" name="date"  class="form-control">
-                    </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-8">
-                    <label for="niveau" class="form-label">Niveau</label>
-                    <input type="text" name="niveau"  class="form-control" >
-                  </div>
-              </div>
-
-                <div class="row">
-                  <div class="col-md-8">
-                    <label for="nationalite" class="form-label">Nationalite</label>
-                    <input type="text" name="nationalite"  class="form-control"  placeholder="ex: Malagasy">
-                  </div>
-              </div>
         
-                  <div class="row">
-                    <div class="input-group mt-3 mb-3 col-md-8">
-                    
-                      <input type="email" name="email" class="form-control"  placeholder="votre adress email">
-                      <input type="number" name="number"  class="form-control" placeholder="telephone">
-                      <input type="text" name="adres" class="form-control" placeholder="votre Adresse">
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-8">
-                      <label for="mention" class="form-label">Mention</label>
-                      <input type="text" name="mention"  class="form-control" >
-                    </div>
-                </div><br>
                  
         
-                  <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-primary btn-sm text-dark" >Annuler</button>
+                <div class="col-md-6 text-center">
+                    <button type="button" class="btn btn-dark text-light btn-sm" >Annuler</button>
                     &nbsp;&nbsp;          
-                    <button type="button" class="btn btn-primary btn-sm text-dark" >Ajouter</button>
-                  </div>  
+                    <button type="button" class="btn btn-dark btn-sm text-light" >Ajouter</button>
+                  </div> 
+
               </form>
               
             
@@ -126,7 +92,7 @@
 
       <div *ngIf="isCurrentPage('liste-eleves')">
         <div class="card">
-          <div class="card-header bg-primary text-white input-group   ">
+          <div class="card-header bg-secondary text-white input-group   ">
             <h3 style="text-align: initial;">Liste des information</h3>
            <!--<div class="input-group col-md-3" style="justify-content: end;">
               <input class="form-control" type="text" name="search" style="left: 510px;">
@@ -142,12 +108,11 @@
                <table class="table table-bordered">
                  <thead>
                    <tr>
-                     <th>Nom</th>
-                     <th>prenom</th>
-                     <th>Mention</th>
-                     <th>Niveau</th>
-                     <th>Email</th>
-                     <th>Adress</th>
+                     <th>Title</th>
+                     <th>content</th>
+                     <th>IP</th>
+                     <th>Hostname</th>
+                     <th>Date</th>
                      <th>Action</th>
                    
                  </tr>
@@ -174,15 +139,12 @@
                       <input type="email" name="email" class="form-control"  >
                       <span ></span>
                     </td>
-                    <td>
-                      <input type="text" class="form-control">
-                      <span></span>
-                    </td>
                      <td class="text-center">
-                      <button type="button" class="btn btn-primary btn-sm text-dark" >Enregistrer</button>
-                       <button type="button" class="btn btn-primary btn-sm" >Editer</button>  
+                      <button type="button" class="btn btn-dark btn-sm text-light" >Enregistrer</button>
+                      &nbsp;&nbsp; 
+                       <button type="button" class="btn btn-dark btn-sm text-light" >Editer</button>  
                        &nbsp;
-                       <button type="button" class="btn btn-danger btn-sm" ></button>
+                       <button type="button" class="btn btn-danger btn-sm text-light" ></button>
                      </td>
                    </tr>
                  </tbody>

@@ -8163,13 +8163,14 @@
     color: #000; }
   
   .img {
-    
+   
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center; }
 
 
     #img {
+
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center center; }
