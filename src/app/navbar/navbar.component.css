@@ -1,0 +1,15 @@
+ .nav-link:hover{
+    background-color: darkgray;
+  
+ }
+
+
+ .nav-item:hover .dropdown-menu {
+    display: block; 
+}
+
+.dropdown-item:hover {
+    font-size: 20px; 
+    color: gray;
+}
+
