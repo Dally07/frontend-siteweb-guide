@@ -10,5 +10,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './guide.component.css'
 })
 export class GuideComponent {
+  constructor () {}
+
+  currentPage: string = 'accueil';
+  
+  goToPage(page: string) {
+    this.currentPage = page;
+  }
+
+  isCurrentPage(page: string): boolean {
+    return this.currentPage === page;
+  }
 
 }
