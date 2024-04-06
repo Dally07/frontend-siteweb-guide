@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { HommeComponent } from './homme/homme.component';
 import { GuideComponent } from './guide/guide.component';
@@ -10,13 +11,19 @@ import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { Router } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
+import { ApiService } from './api.service';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+
+
+
 
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet],
+  imports: [CommonModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet, HttpClientModule],
+  providers: [ApiService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

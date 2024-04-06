@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import path from 'path';
 import { HommeComponent } from './homme/homme.component';
 import { GuideComponent } from './guide/guide.component';
 import { MapComponent } from './map/map.component';
