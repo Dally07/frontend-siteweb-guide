@@ -81,18 +81,18 @@ $('#sidebarCollapse').on('click', function () {
                   <h3 style="text-align: center;">Create your Information here</h3>
                 </div>
                </div><br>
-              <form #userForm="ngForm">
+              <form #InfoForm="ngForm"  (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-md-8">
                       <label for="nom" class="form-label">Title</label>
-                      <input type="text" name="nom"  class="form-control" placeholder="title of your information...">
+                      <input type="text" name="titreInfo" [(ngModel)]="infoForm.titreInfo"  class="form-control" placeholder="title of your information...">
                     </div>
                 </div>
         
                   <div class="row">
                     <div class="mb-3 mt-3">
                       <label for="comment">Content</label>
-                      <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+                      <textarea class="form-control" [(ngModel)]="infoForm.corpsInfo"  rows="5" id="comment" name="corpsInfo"></textarea>
                     </div>
                   </div><br>
 
@@ -100,9 +100,9 @@ $('#sidebarCollapse').on('click', function () {
                  
         
                 <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-dark text-light btn-sm" >Annuler</button>
+                    <button type="button" class="btn btn-dark text-light btn-sm" (click)="clearForm()">Annuler</button>
                     &nbsp;&nbsp;          
-                    <button type="button" class="btn btn-dark btn-sm text-light" >Ajouter</button>
+                    <button type="submit" class="btn btn-dark btn-sm text-light" >Ajouter</button>
                   </div> 
 
               </form>
@@ -114,9 +114,11 @@ $('#sidebarCollapse').on('click', function () {
         <div class="card">
           <div class="card-header bg-secondary text-white input-group   ">
             <h3 style="text-align: initial;">Liste des information</h3>
-                    <div class="input-group col-md-2 justify-content-end " style="justify-content: end;">
+                    <!--
+                      <div class="input-group col-md-2 justify-content-end " style="justify-content: end;">
                         <input class="form-control " type="date" name="search" >
                     </div>
+                    -->
            
           </div>
          </div>
@@ -136,18 +138,14 @@ $('#sidebarCollapse').on('click', function () {
                  </tr>
                  </thead>
                  <tbody>
-                   <tr >
+                   <tr *ngFor="let item of informationList">
                     <td>
-                      <input type="text" class="form-control"  >
-                      <span ></span>
+                      {{item.titreInfo}}
                     </td>
                     <td>
-                      <input type="text" class="form-control">
-                      <span ></span>
-                    </td>
+                      {{item.corpsInfo}}
                     <td>
-                      <input type="text" class="form-control" >
-                      <span ></span>
+                      {{item.date}}
                     </td>
                     
                      <td class="text-center">
