@@ -30,9 +30,12 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 export class AppComponent {
   isLoginPage: boolean = false;
   isAdminpage: boolean = false;
+  isLoggedIn: boolean = false;
 
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private apiService: ApiService){
+  
+  }
 
   ngOnInit(){
     this.router.events.subscribe((event) =>{

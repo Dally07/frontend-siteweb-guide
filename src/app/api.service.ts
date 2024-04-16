@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,  } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { error } from 'console';
 import { informations } from './admin/admin.component';
 import { response } from 'express';
 import { map } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 
@@ -13,27 +14,54 @@ import { map } from 'rxjs';
 })
 export class ApiService {
 
-  apiUrl: string = 'http://localhost:3000/user';
+  apiUrl: string = 'http://localhost:3000/auth';
   apiInfo: string = 'http://localhost:3000/information';
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient,
+    private jwtHelper: JwtHelperService) { }
 
+
+  // for user
   getUsers() {
     return this.http.get(`${this.apiUrl}`);
   }
 
-  loginUser(userData: any) {
-    return this.http.post(`${this.apiUrl}/login`, userData)
+  loginUser(userData: any): Observable<{access_token: string}> {
+    return this.http.post<{access_token: string}>(`${this.apiUrl}/login`, userData)
     .pipe(
-      catchError(error => {
-        console.error(`erreur de connection de l'utilisateur :`,error)
-        return throwError(error);
+      map(response => {
+        const accessToken = response.access_token;
+        localStorage.setItem('access_token', accessToken);
+        return response;
       })
     );
   }
 
+  hasAdminRole(): boolean {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      if (decodedToken && decodedToken['roles'] && (decodedToken['roles'].includes('admin') || decodedToken['permission'].includes('manage_admin_page'))) {
+        return true;
+      }
+    
+    }
+    return false;
+  }
+
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('access_token');
+    return !!token && this.jwtHelper.isTokenExpired(token);
+  }
+
+
+
+
+  // for information
   getInformation() {
-    return this.http.get(`${this.apiInfo}`).pipe(
+    return this.http.get(`${this.apiInfo}`, {
+    }).pipe(
       catchError ( error => {
         console.error(`erreur de la recuperation de l'information :`,error)
         return throwError(error);
@@ -67,7 +95,7 @@ export class ApiService {
   }
 
   deleteInformation(id: number) {
-    return this.http.delete(`${this.apiInfo}, ${id}` ).pipe(
+    return this.http.delete(`${this.apiInfo}/${id}` ).pipe(
       catchError ( error => {
         console.error(`erreur de la creation de l'information :`,error)
         return throwError(error);
@@ -75,5 +103,13 @@ export class ApiService {
     )
   }
 }
+
+
+
+
+//logout () {
+  //localStorage.removeItem('access_token');
+ // this.router.navigate(['/login'])
+//}
 
 

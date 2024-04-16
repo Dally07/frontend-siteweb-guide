@@ -58,7 +58,7 @@ $('#sidebarCollapse').on('click', function () {
         </li>
         
         
-        <li class="active" (click)="goToPage('logout')">
+        <li class="active" (click)="('logout')">
           <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
         </li>
         
@@ -153,7 +153,7 @@ $('#sidebarCollapse').on('click', function () {
                       &nbsp;&nbsp;--> 
                        <button type="button" class="btn btn-dark btn-sm text-light" ><span class="fa fa-edit mr-1"></span></button>  
                        &nbsp;
-                       <button type="button" class="btn btn-danger btn-sm text-light" ><span class="fa fa-save mr-1"></span></button>
+                       <button type="button" class="btn btn-danger btn-sm text-light" ><span class="fa fa-trash mr-1"></span></button>
                      </td>
                    </tr>
                  </tbody>
@@ -168,9 +168,8 @@ $('#sidebarCollapse').on('click', function () {
         <p>Contenu de la page des services...</p>
       </div>
      
-      <div *ngIf="isCurrentPage('logout')">
-        <h2 class="mb-4">Services</h2>
-        <p>Contenu de la page des Accueil...</p>
+      
+        
       </div>
 
 

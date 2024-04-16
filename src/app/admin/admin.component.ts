@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ApiService } from '../api.service';
-import { error } from 'console';
 import { HttpClientModule } from '@angular/common/http';
 
 export interface  informations{
@@ -49,7 +48,7 @@ export class AdminComponent {
         this.informationList = data ;
       },
       (error) => {
-        console.error(`erreur de l affichage`, error)
+        alert(`erreur de l affichage`)
       }
     )
   }
@@ -70,11 +69,11 @@ export class AdminComponent {
           this.clearForm();
         },
         (error) => {
-          console.error(`erreur de creation`)
+          alert(`erreur de creation`)
         }
       );
     } else {
-      console.error(`veuillez remplir toutes les champs`, error);
+      alert(`veuillez remplir toutes les champs`);
     }
   }
 
@@ -88,6 +87,22 @@ export class AdminComponent {
   }
 
 
+  deleteInformation (id: number) {
+    const confirmDelete = confirm(`etes vous sur de supprimer l'information ?`)
+    if (confirmDelete){
+      this.apiService.deleteInformation(id).subscribe(
+        () => {
+          //this.informationList = this.informationList.filter(item => item. !== this.infoForm)
+          alert(`Information  supprimer avec succes`)
+        },
+      )
+    }
+  }
+
+
 }
+
+
+
 
 
