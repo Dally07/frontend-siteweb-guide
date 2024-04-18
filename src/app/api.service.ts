@@ -1,24 +1,25 @@
-import { Injectable } from '@angular/core';
+import {  Injectable } from '@angular/core';
 import { HttpClient,  } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { error } from 'console';
+import { Observable, catchError } from 'rxjs';
 import { informations } from './admin/admin.component';
-import { response } from 'express';
-import { map } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { map, throwError } from 'rxjs';
+
+
+
 
 
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ApiService {
 
   apiUrl: string = 'http://localhost:3000/auth';
   apiInfo: string = 'http://localhost:3000/information';
 
-  constructor(private readonly http: HttpClient,
-    private jwtHelper: JwtHelperService) { }
+  constructor(private readonly http: HttpClient
+   ) { }
 
 
   // for user
@@ -26,33 +27,25 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}`);
   }
 
-  loginUser(userData: any): Observable<{access_token: string}> {
-    return this.http.post<{access_token: string}>(`${this.apiUrl}/login`, userData)
+  loginUser(userData: any): Observable<boolean> {
+    return this.http.post<{token_type: string, access_token: string}>(`${this.apiUrl}/login`, userData)
     .pipe(
       map(response => {
-        const accessToken = response.access_token;
-        localStorage.setItem('access_token', accessToken);
-        return response;
-      })
-    );
-  }
-
-  hasAdminRole(): boolean {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      if (decodedToken && decodedToken['roles'] && (decodedToken['roles'].includes('admin') || decodedToken['permission'].includes('manage_admin_page'))) {
+        if (response.token_type === 'Bearer' && response.access_token ) {
+       
+        localStorage.setItem('access_token', response.access_token);
         return true;
-      }
-    
-    }
-    return false;
-  }
-
-
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem('access_token');
-    return !!token && this.jwtHelper.isTokenExpired(token);
+        } else {
+          return false;
+        }
+       
+      }),
+      catchError (error => {
+        console.error('connection error', error);
+        return throwError(error);
+      })
+      
+    );
   }
 
 

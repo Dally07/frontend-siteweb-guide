@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup,  ReactiveFormsModule,  Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -22,7 +22,9 @@ errorMessage: string = '';
 
 
   constructor(private readonly apiService: ApiService , 
-    private readonly router: Router) {}
+    private readonly router: Router,
+   
+    ) {}
 
 
   

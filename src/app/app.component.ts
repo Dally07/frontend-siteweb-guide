@@ -12,7 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { Router } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { ApiService } from './api.service';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
+
 
 
 
