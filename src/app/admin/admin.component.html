@@ -1,28 +1,3 @@
-<script>
-    (function($) {
-
-"use strict";
-
-var fullHeight = function() {
-
-    $('.js-fullheight').css('height', $(window).height());
-    $(window).resize(function(){
-        $('.js-fullheight').css('height', $(window).height());
-    });
-
-};
-fullHeight();
-
-$('#sidebarCollapse').on('click', function () {
-  $('#sidebar').toggleClass('active');
-});
-
-})(jQuery);
-</script>
-
-<style>
-
-</style>
 
 
 <main class="main">
@@ -32,7 +7,7 @@ $('#sidebarCollapse').on('click', function () {
     <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar" class="bg-dark">
       <div class="custom-menu">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary" (click)="toggleSideBar()">
         </button>
       </div>
 
@@ -58,8 +33,8 @@ $('#sidebarCollapse').on('click', function () {
         </li>
         
         
-        <li class="active" (click)="('logout')">
-          <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+        <li class="active" >
+          <a href="#" (click)="logout()"><span class="fa fa-sign-out mr-3"></span>logOut</a>
         </li>
         
       </ul>
@@ -86,6 +61,7 @@ $('#sidebarCollapse').on('click', function () {
                     <div class="col-md-8">
                       <label for="nom" class="form-label">Title</label>
                       <input type="text" name="titreInfo" [(ngModel)]="infoForm.titreInfo"  class="form-control" placeholder="title of your information...">
+                    
                     </div>
                 </div>
         
@@ -94,7 +70,30 @@ $('#sidebarCollapse').on('click', function () {
                       <label for="comment">Content</label>
                       <textarea class="form-control" [(ngModel)]="infoForm.corpsInfo"  rows="5" id="comment" name="corpsInfo"></textarea>
                     </div>
-                  </div><br>
+                  </div>
+
+                              <div class="row">
+                                    <div class="mb-3 mt-3">
+                        
+                                        <div class="image-generator-container">
+
+                                              <div class="image-upload">
+                                                  <input type="file" id="imageInput" (change)="handleImageChange($event)">
+                                                  <label for="imageInput">
+                                                    <i class="fa fa-camera"></i>
+                                                      selectionner une image
+                                                  </label>
+                                               </div>
+
+                                            <div class="preview" *ngIf="selectedImage">
+                                              <img [src]="selectedImage" alt="image selected">
+                                            </div>
+                                              
+                                        </div>
+
+                                    </div>
+                                </div>
+                  <br>
 
         
                  

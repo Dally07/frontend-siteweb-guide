@@ -215,8 +215,8 @@
   button,
   [type="button"],
   [type="reset"],
-  [type="submit"] {
-    -webkit-appearance: button; }
+  [type="submit"] 
+
   
   button:not(:disabled),
   [type="button"]:not(:disabled),
@@ -240,8 +240,7 @@
   input[type="date"],
   input[type="time"],
   input[type="datetime-local"],
-  input[type="month"] {
-    -webkit-appearance: listbox; }
+  input[type="month"] 
   
   textarea {
     overflow: auto;
@@ -273,7 +272,7 @@
   
   [type="search"] {
     outline-offset: -2px;
-    -webkit-appearance: none; }
+    }
   
   [type="search"]::-webkit-search-decoration {
     -webkit-appearance: none; }
@@ -8264,7 +8263,7 @@
         background: #2f89fc;
         border-color: transparent;
         position: relative;
-        color: #000;
+        color: white;
         width: 30px;
         height: 30px; }
         #sidebar .custom-menu .btn.btn-primary:after, #sidebar .custom-menu .btn.btn-primary:before {
@@ -8363,4 +8362,31 @@
   
   .subscribe-form .form-control {
     background: #4897fc; }
-  
+
+
+#carousel {
+  width: 100%;
+      height: 600px;
+      overflow: hidden;
+
+}
+
+#carousel img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+.font{
+  width: 100%;
+     height: 60vh;
+     background: url('../../valbio.jpg');
+     background-position: center;
+     background-size: cover;
+    /*background-attachment: fixed;*/
+    
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+    
+ }

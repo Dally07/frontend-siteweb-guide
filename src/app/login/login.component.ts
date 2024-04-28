@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../api.service';
+import { response } from 'express';
+import { error } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -39,20 +41,28 @@ errorMessage: string = '';
       password : this.loginForm.value.password
     };
 
-    this.apiService.loginUser(userData).subscribe(
-      (response: any) => {
+    this.apiService.loginUser(userData).subscribe({
+      next: (response: any) => {
         console.log(response);
-        localStorage.setItem('access_token', response.access_token);
-        this.router.navigate(['/admin']);
+        const token = response;
+        const jwttoken = this.apiService.getjwttoken;
+        
+    
+        localStorage.setItem('acces_token' , JSON.stringify(token));
+        
+     
+       this.router.navigate(['/admin']);
+        
       },
-      (error) => {
+      error: (error) => {
         if (error.error instanceof ErrorEvent) {
-          this.errorMessage = 'une erreur est survenue : ' + error.error.message;
+          this.errorMessage = 'une erreur est survenue:' + error.error.message;
         } else {
-          this.errorMessage = error.error.message || 'echec de la connection';
+          this.errorMessage = error.error.message || 'echec de la conection'
         }
       }
-    );
+    }
+      );
     }
   
   

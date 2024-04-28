@@ -5,6 +5,7 @@ import { MapComponent } from './map/map.component';
 import { LoginComponent } from './login/login.component';
 import { AboutComponent } from './about/about.component';
 import { AdminComponent } from './admin/admin.component';
+import { AuthGuard } from './auth.guard';
 
 
 
@@ -17,5 +18,5 @@ export const routes: Routes = [
     {'path':'about', component:AboutComponent},
     {'path':'', redirectTo: '/login' , pathMatch: 'full'},
     {'path':'login', component:LoginComponent},
-    {'path':'admin', component:AdminComponent}
+    {'path':'admin', component:AdminComponent, canActivate: [AuthGuard]}
 ];

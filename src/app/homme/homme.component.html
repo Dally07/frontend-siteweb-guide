@@ -5,9 +5,10 @@
   	              <!--BODY-->
   <!--sidebar-->
   <div  class="wrapper d-flex align-items-stretch">
-    <nav id="sidebar" class="bg-light">
+    <nav id="sidebar" class="bg-light" [ngClass]="{'hidden': isSidebarHidden}">
       <div class="custom-menu">
-        <button type="button" id="sidebarCollapse" class="btn btn-dark">
+        <button type="button" id="sidebarCollapse"  class="btn btn-primary" (click)="toggleSideBar()" style="position: fixed;"> 
+         
         </button>
       </div>
       <div class="img bg-wrap text-center py-4">
@@ -24,79 +25,84 @@
     </nav>
 
       <!-- Page Content  -->
-    <div id="content" class="p-4 p-md-5 pt-5">
-      <!-- Carousel wrapper -->
-<div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel" data-mdb-carousel-init>
-  <!-- Indicators -->
+    
+<div id="content" class="p-4 p-md-1 pt-5">
+
+ <section class="text-light text-center">
+  <div  class="font">
+    <h1 ><span class="badge bg-secondary ">WELCOME TO CENTRE VALBIO</span></h1>
+    <br><br><br>  
+  </div>
+ </section><br><br><br>
+
+
+ <div class="container-fluid mt-3 text-center">
+  <h1>Nos Evenement recentes</h1  >
+  <p>The following example shows how to create a basic carousel with indicators and controls.</p>
+</div>
+
+
+
+  <!-- Carousel -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel" >
+
+  <!-- Indicators/dots -->
   <div class="carousel-indicators">
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="0"
-      class="active"
-      aria-current="true"
-      aria-label="Slide 1"
-    ></button>
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="1"
-      aria-label="Slide 2"
-    ></button>
-    <button
-      type="button"
-      data-mdb-target="#carouselBasicExample"
-      data-mdb-slide-to="2"
-      aria-label="Slide 3"
-    ></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
   </div>
-
-  <!-- Inner -->
-  <div class="carousel-inner">
-    <!-- Single item -->
-    <div class="carousel-item active">
-      <img src="../../madagascar-fall.jpg" class="d-block w-100" alt="Sunset Over the City"/>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-      </div>
+  
+  <!-- The slideshow/carousel -->
+  <div class="carousel-inner" id="carousel">
+    <div  class="carousel-item active" id="carousel"  >
+      <img src="{{ image5 }}" class="img-fluid" style="width:100%">
     </div>
-
-    <!-- Single item -->
-    <div class="carousel-item">
-      <img src="../../Dec 2 - 20.jpg" class="d-block w-100" alt="Canyon at Nigh"/>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
+    <div  class="carousel-item" id="carousel" >
+      <img src="{{ image3 }}"  class="img-fluid" style="width:100%">
     </div>
-
-    <!-- Single item -->
-    <div class="carousel-item">
-      <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" class="d-block w-100" alt="Cliff Above a Stormy Sea"/>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-      </div>
+    <div  class="carousel-item" id="carousel" >
+      <img src="{{ image4 }}" class="img-fluid" style="width:100%">
     </div>
   </div>
-  <!-- Inner -->
-
-  <!-- Controls -->
-  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
+  
+  <!-- Left and right controls/icons -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
   </button>
-  <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
+  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
   </button>
 </div>
-<!-- Carousel wrapper -->
-     </div>
-  </div>
 
- 
+<div class="container-fluid mt-3">
+  <h3>Toutes Nos Evenement</h3>
+  <p>The following example shows how to create a basic carousel with indicators and controls.</p>
+</div>
+
+
+<div class="p-4 p-md-4 pt-5">
+<div class="row row-cols-2 row-cols-xxl g-4">
+  <div class="col col-lg-4 col-md-10 "*ngFor="let item of informationList">
+    <div class="card">
+      <img src="{{ image4 }}" class="card-img-top"/>
+      <div class="card-body">
+        <h5 class="card-title">{{item.titreInfo}}</h5>
+        <p class="card-text">
+          {{item.corpsInfo}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+                
+
+</div>
+
+
+
+ </div>
 </main>
 
 

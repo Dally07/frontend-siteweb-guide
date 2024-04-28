@@ -8384,3 +8384,44 @@
   .subscribe-form .form-control {
     background: #4897fc; }
   
+
+    .image-upload {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .image-upload input[type="file"] {
+      display: none;
+    }
+
+
+    .image-upload label {
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+     img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .image-upload label:hover {
+      background-color: #f5f5f5;
+    }
+
+
+    .image-upload .fa {
+      margin-right: 5px;
+    }
+
+
+    .preview {
+      width: 300px;
+      height: 200px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }

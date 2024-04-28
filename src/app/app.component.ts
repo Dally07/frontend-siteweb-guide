@@ -24,17 +24,24 @@ import { HttpClientModule} from '@angular/common/http';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet, HttpClientModule],
-  providers: [ApiService],
+  providers: [ApiService ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  image1 = 'assets/Dec 2 - 20.jpg'
+  image2 = 'assets/IMG_5254-768X1024.jpg'
+  image3 = 'assets/IMG_20230705_131609.jpg'
+  image4 = 'assets/IMG_20230704_131038.jpg'
+  image5 = 'assets/madagascar-fall.jpg'
+
+
   isLoginPage: boolean = false;
   isAdminpage: boolean = false;
   isLoggedIn: boolean = false;
 
 
-  constructor(private router: Router, private apiService: ApiService){
+  constructor(private router: Router){
   
   }
 
@@ -46,6 +53,9 @@ export class AppComponent {
       }
     })
   }
+
+
+
   
 }
 

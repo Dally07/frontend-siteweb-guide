@@ -3,10 +3,8 @@ import { HttpClient,  } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { informations } from './admin/admin.component';
 import { map, throwError } from 'rxjs';
-
-
-
-
+import { access } from 'node:fs';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -15,29 +13,29 @@ import { map, throwError } from 'rxjs';
 
 export class ApiService {
 
-  apiUrl: string = 'http://localhost:3000/auth';
-  apiInfo: string = 'http://localhost:3000/information';
+  private jwtToken: string | null = null;
 
-  constructor(private readonly http: HttpClient
+  apiUrl: string = 'http://localhost:3000/auth';
+
+  apiInfo: string = 'http://localhost:3000/information';
+  
+
+  constructor(private readonly http: HttpClient, private readonly router: Router
    ) { }
 
 
   // for user
   getUsers() {
-    return this.http.get(`${this.apiUrl}`);
+    //return this.http.get(`${this.apiUrl}`);
   }
 
-  loginUser(userData: any): Observable<boolean> {
-    return this.http.post<{token_type: string, access_token: string}>(`${this.apiUrl}/login`, userData)
+  loginUser(userData: any) {
+    return this.http.post(`${this.apiUrl}/login`, userData)
     .pipe(
       map(response => {
-        if (response.token_type === 'Bearer' && response.access_token ) {
-       
-        localStorage.setItem('access_token', response.access_token);
-        return true;
-        } else {
-          return false;
-        }
+        console.log(response);
+        return response;
+        
        
       }),
       catchError (error => {
@@ -49,26 +47,36 @@ export class ApiService {
   }
 
 
+  // protection de route
+ isLoggedIn(): boolean {
+  return  this.jwtToken !== null;
+}
+
+getjwttoken(): string | null {
+  return this.jwtToken;
+}
+
+
+
 
 
   // for information
-  getInformation() {
-    return this.http.get(`${this.apiInfo}`, {
-    }).pipe(
-      catchError ( error => {
-        console.error(`erreur de la recuperation de l'information :`,error)
-        return throwError(error);
-      })
-    )
+  getInformation(userId: number):Observable<informations[]> {
+   return this.http.get<informations[]>('http://localhost:3000/information').pipe()
+  ;
   }
 
   createInformation(informationData: any): Observable<informations> {
-    return this.http.post<any>(`${this.apiInfo}` , informationData).pipe(
+
+    return this.http.post<any>(`http://localhost:3000/information` , informationData).pipe(
       map((response: any) => {
+        console.log(response);
         return {
           titreInfo: response.titreInfo,
           corpsInfo: response.corpsInfo,
-          date: response.date
+          date: response.date,
+          userId: response.userId,
+          ImageData: response.imageData
         };
       }),
       catchError ( error => {
@@ -90,19 +98,25 @@ export class ApiService {
   deleteInformation(id: number) {
     return this.http.delete(`${this.apiInfo}/${id}` ).pipe(
       catchError ( error => {
-        console.error(`erreur de la creation de l'information :`,error)
+        console.error(`erreur de la  de l'information :`,error)
         return throwError(error);
       })
     )
   }
+
+ 
+singOut(): void {
+  
+  this.router.navigate(['/login'])
 }
 
 
 
 
-//logout () {
-  //localStorage.removeItem('access_token');
- // this.router.navigate(['/login'])
-//}
+
+
+}
+
+
 
 

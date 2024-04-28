@@ -3,11 +3,16 @@ import { CommonModule, } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { parse } from 'path';
+import { error } from 'console';
+import { response } from 'express';
 
 export interface  informations{
   titreInfo: string;
   corpsInfo: string;
   date: Date ;
+  userId: number;
 }
 
 @Component({
@@ -21,17 +26,34 @@ export interface  informations{
 
 
 export class AdminComponent {
-  constructor (private readonly apiService: ApiService) {}
+ 
+  isSidebarHidden = false ;
+  selectedImage: string | null=null;
+  generatedImage: string | null=null;
+
+ 
+  constructor (private readonly apiService: ApiService, 
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+    ) {this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');}
+  userId: number;
+  dapartementId: number | null=null;
+  userInfo: any;
   informationList: informations[] = [];
   infoForm: informations =  {
     titreInfo: '',
     corpsInfo: '',
-    date: new Date()
-
+    date: new Date(),
+    userId: 0
   }
 
   currentPage: string = 'accueil';
   
+  toggleSideBar(){
+    this.isSidebarHidden = !this.isSidebarHidden;
+    document.getElementById('sidebar')?.classList.toggle('active')
+}
+  // navigation
   goToPage(page: string) {
     this.currentPage = page;
   }
@@ -41,52 +63,76 @@ export class AdminComponent {
   }
 
 
-  ngOnInit() {
-    this.apiService.getInformation()
-    .subscribe(
-      (data: any ) => {
-        this.informationList = data ;
-      },
-      (error) => {
-        alert(`erreur de l affichage`)
-      }
-    )
-  }
+
+  // read information
+  ngOnInit(): void {
+   this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');
+ 
+   this.getinfo();
+    }
 
 
+   
+
+
+    private getinfo() {
+      this.apiService.getInformation(this.userId).subscribe((data: informations[]) => {
+        this.informationList = data;
+      })
+    }
+    
+
+
+
+
+
+  //create information
   onSubmit() {
     if (this.infoForm.titreInfo && this.infoForm.corpsInfo) {
       const newInformation : informations = {
         titreInfo: this.infoForm.titreInfo,
         corpsInfo: this.infoForm.corpsInfo,
-        date: new Date()
+        date: new Date(),
+        userId: 0
       };
       this.apiService.createInformation(newInformation).subscribe
-      (
-        (information: informations) => {
-          console.log(`information creer` ,information);
-          this.informationList.push(information);
-          this.clearForm();
+      ({
+        next: (response: any) => {
+          console.log(response);
+          const informations = response.informations
+            console.log(`information creer` ,informations);
+            this.informationList.push(informations);
+            this.clearForm();
+            
         },
-        (error) => {
+        error: (error) => {
           alert(`erreur de creation`)
         }
+      }
+        
       );
     } else {
       alert(`veuillez remplir toutes les champs`);
     }
   }
 
+
+
+  // vider une formulaire
   clearForm(){
     this.infoForm = {
       titreInfo: '',
       corpsInfo: '',
-      date: new Date()
+      date: new Date(),
+      userId: 0
 
     }
   }
 
 
+
+
+  // delete information
   deleteInformation (id: number) {
     const confirmDelete = confirm(`etes vous sur de supprimer l'information ?`)
     if (confirmDelete){
@@ -100,7 +146,34 @@ export class AdminComponent {
   }
 
 
-}
+  logout(): void {
+   localStorage.removeItem('acces_token');
+   this.apiService.singOut();
+  }
+
+
+  //image
+  handleImageChange(event: Event) {
+    const file =(event.target as HTMLInputElement)?.files?.[0];
+
+
+  
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }   
+  }
+
+  async generateImage(): Promise<void> {
+    
+  }
+
+
+  }
 
 
 
