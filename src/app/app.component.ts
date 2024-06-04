@@ -12,7 +12,10 @@ import { LoginComponent } from './login/login.component';
 import { Router } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { ApiService } from './api.service';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { AuthGuard } from './auth.guard';
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -23,8 +26,8 @@ import { HttpClientModule} from '@angular/common/http';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet, HttpClientModule],
-  providers: [ApiService ],
+  imports: [CommonModule, FormsModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet, HttpClientModule],
+  providers: [ApiService, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true} ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -38,6 +41,8 @@ export class AppComponent {
 
   isLoginPage: boolean = false;
   isAdminpage: boolean = false;
+
+
   isLoggedIn: boolean = false;
 
 

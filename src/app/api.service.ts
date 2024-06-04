@@ -1,10 +1,11 @@
 import {  Injectable } from '@angular/core';
-import { HttpClient,  } from '@angular/common/http';
+import { HttpClient, HttpHeaders,  } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { informations } from './admin/admin.component';
 import { map, throwError } from 'rxjs';
 import { access } from 'node:fs';
 import { Router } from '@angular/router';
+import { userInfo } from 'node:os';
 
 
 @Injectable({
@@ -29,6 +30,8 @@ export class ApiService {
     //return this.http.get(`${this.apiUrl}`);
   }
 
+
+  //logIn
   loginUser(userData: any) {
     return this.http.post(`${this.apiUrl}/login`, userData)
     .pipe(
@@ -46,14 +49,16 @@ export class ApiService {
     );
   }
 
+  
 
   // protection de route
- isLoggedIn(): boolean {
+isLoggedIn(): boolean {
   return  this.jwtToken !== null;
 }
 
-getjwttoken(): string | null {
-  return this.jwtToken;
+// recuperation token pout l'authentification
+getjwttoken(token: string): string | null {
+  return token;
 }
 
 
@@ -61,54 +66,45 @@ getjwttoken(): string | null {
 
 
   // for information
-  getInformation(userId: number):Observable<informations[]> {
-   return this.http.get<informations[]>('http://localhost:3000/information').pipe()
-  ;
+
+  
+
+  //read
+  getInformation(userId: number):Observable<informations[]> { 
+   return this.http.get<informations[]>('http://localhost:3000/information').pipe();
   }
 
-  createInformation(informationData: any): Observable<informations> {
 
-    return this.http.post<any>(`http://localhost:3000/information` , informationData).pipe(
-      map((response: any) => {
-        console.log(response);
-        return {
-          titreInfo: response.titreInfo,
-          corpsInfo: response.corpsInfo,
-          date: response.date,
-          userId: response.userId,
-          ImageData: response.imageData
-        };
-      }),
-      catchError ( error => {
-        console.error(`erreur de la creation de l'information :`,error)
-        return throwError(error);
-      })
-    );
+
+  //create
+  createInformation(formData: FormData, tokens: string): Observable<any> {
+    const headers  =new HttpHeaders({
+      'Authorization': `Bearer ${tokens}`
+    });
+   return this.http.post<any>(`http://localhost:3000/information` , formData, {headers})
+  } 
+
+
+  
+// update
+  updateInformation(id: number , updateInformationDto: any) {
+    return this.http.patch(`${this.apiInfo}/${id}` , updateInformationDto);
   }
 
-  updateInformation(id: number , informationData: any) {
-    return this.http.patch(`${this.apiInfo}/${id}` , informationData).pipe(
-      catchError ( error => {
-        console.error(`erreur de la modification de l'information :`,error)
-        return throwError(error);
-      })
-    )
-  }
 
-  deleteInformation(id: number) {
-    return this.http.delete(`${this.apiInfo}/${id}` ).pipe(
-      catchError ( error => {
-        console.error(`erreur de la  de l'information :`,error)
-        return throwError(error);
-      })
-    )
+// delete
+  deleteInformation(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiInfo}/${id}` );
   }
 
  
-singOut(): void {
-  
+
+  //logOut
+singOut(): void { 
   this.router.navigate(['/login'])
 }
+
+
 
 
 

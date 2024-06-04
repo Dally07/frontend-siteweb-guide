@@ -11,16 +11,17 @@
          
         </button>
       </div>
-      <div class="img bg-wrap text-center py-4">
+      <div class="img bg-wrap text-center py-4" >
         <form class="d-flex" style="margin-left: 20px;">
           <input class="form-control me-2" type="text" placeholder="Search">
           <button class="btn btn-secondary me-5" type="button">Search</button>
         </form>
       </div>
-      <ul class="list-unstyled components mb-5 text-dark" style="justify-content: center; ">
-     
-        
-      </ul>
+      <div *ngFor="let item of informationList" >
+        <ul class="list-unstyled components mb-2 text-dark" style="justify-content: center; " >
+          <a class="text-dark">{{item.titreInfo}}..{{item.date | date:'dd/MM/yyyy'}}</a>
+        </ul>
+      </div>
 
     </nav>
 
@@ -85,7 +86,7 @@
 <div class="row row-cols-2 row-cols-xxl g-4">
   <div class="col col-lg-4 col-md-10 "*ngFor="let item of informationList">
     <div class="card">
-      <img src="{{ image4 }}" class="card-img-top"/>
+      <img [src]="item.imageData" class="card-img-top"/>
       <div class="card-body">
         <h5 class="card-title">{{item.titreInfo}}</h5>
         <p class="card-text">

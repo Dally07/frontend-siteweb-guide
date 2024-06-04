@@ -6,11 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../api.service';
 import { response } from 'express';
 import { error } from 'console';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -45,13 +46,13 @@ errorMessage: string = '';
       next: (response: any) => {
         console.log(response);
         const token = response;
-        const jwttoken = this.apiService.getjwttoken;
-        
-    
-        localStorage.setItem('acces_token' , JSON.stringify(token));
+            
+    localStorage.setItem('acces_token' , JSON.stringify(token));
+
+
         
      
-       this.router.navigate(['/admin']);
+       this.router.navigate(['/admin'], {queryParams: {token}});
         
       },
       error: (error) => {

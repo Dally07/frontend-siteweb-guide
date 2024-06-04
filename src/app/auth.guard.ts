@@ -3,6 +3,7 @@ import { mapToCanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActiv
 import { ApiService } from "./api.service";
 import { jwtDecode } from "jwt-decode";
 import { error } from "console";
+import { Token } from "@angular/compiler";
 
 
 
@@ -14,8 +15,8 @@ import { error } from "console";
 export class AuthGuard implements CanActivate {
     constructor (private apiService: ApiService, private router: Router) {}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        const token =  localStorage.getItem('acces_token');
-        if (token) {
+        const tokens =  route.queryParams['token'];
+        if (tokens) {
             
             return true;
            

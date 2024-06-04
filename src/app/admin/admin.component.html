@@ -44,8 +44,67 @@
       <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
       <div *ngIf="isCurrentPage('accueil')">
-        <h2 class="mb-4">Home</h2>
-        <p>Contenu de la page d'accueil...</p>
+        <div class="container-fluid">
+         
+            <div class="row">
+              <div class="col-2 bg-dark text-white p-3">
+                <h6>Administration</h6>
+                <p>information:</p>
+              </div>
+              <div class="col-1 bg-white text-white p-3">
+                 
+              </div>
+              <div class="col-2 bg-dark text-white p-3">
+                <h6>Information Technology</h6>
+                <p>information:</p>
+              </div>
+              <div class="col-1 bg-white text-white p-3">
+                 
+              </div>
+              <div class="col-2 bg-dark text-white p-3">
+                <h6>Logistic</h6>
+                <p>information:</p>
+              </div>
+              <div class="col-1 bg-white text-white p-3">
+                 
+              </div>
+              <div class="col-2 bg-dark text-white p-3">
+                <h6>Health</h6>
+                <p>information:</p>
+              </div>
+              
+            
+          </div><br>
+
+          <div class="row">
+            <div class="col-2 bg-dark text-white p-3">
+              <h6>Direction</h6>
+              <p>information:</p>
+            </div>
+            <div class="col-1 bg-white text-white p-3">
+               
+            </div>
+            <div class="col-2 bg-dark text-white p-3">
+              <h6>Education</h6>
+              <p>information:</p>
+            </div>
+            <div class="col-1 bg-white text-white p-3">
+               
+            </div>
+            <div class="col-2 bg-dark text-white p-3">
+              <h6>Research</h6>
+              <p>information:</p>
+            </div>
+            
+          </div>
+        </div>
+        <hr style="border: 100px;" class="text-dark bg-dark bordered-solide"><hr class="text-dark bg-dark solid">
+        <div class="progress">
+          <div class="progress-bar bg-dark" style="width:100%"></div>
+        </div><br><br>
+
+        <canvas id="myChart"></canvas>
+        
       </div>
 
       <div *ngIf="isCurrentPage('inscription')">
@@ -56,19 +115,19 @@
                   <h3 style="text-align: center;">Create your Information here</h3>
                 </div>
                </div><br>
-              <form #InfoForm="ngForm"  (ngSubmit)="onSubmit()">
+              <form #infoForm="ngForm"  (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-md-8">
-                      <label for="nom" class="form-label">Title</label>
-                      <input type="text" name="titreInfo" [(ngModel)]="infoForm.titreInfo"  class="form-control" placeholder="title of your information...">
+                      <label for="titreInfo" class="form-label">Title</label>
+                      <input type="text" name="titreInfo" [(ngModel)]="infoFormModel.titreInfo"  class="form-control" placeholder="title of your information..." required>
                     
                     </div>
                 </div>
         
                   <div class="row">
                     <div class="mb-3 mt-3">
-                      <label for="comment">Content</label>
-                      <textarea class="form-control" [(ngModel)]="infoForm.corpsInfo"  rows="5" id="comment" name="corpsInfo"></textarea>
+                      <label for="corpsInfo">Content</label>
+                      <textarea class="form-control" [(ngModel)]="infoFormModel.corpsInfo"  rows="5" id="comment" name="corpsInfo" required></textarea>
                     </div>
                   </div>
 
@@ -78,7 +137,7 @@
                                         <div class="image-generator-container">
 
                                               <div class="image-upload">
-                                                  <input type="file" id="imageInput" (change)="handleImageChange($event)">
+                                                  <input type="file" name="imageData" id="imageInput" (change)="handleImageChange($event)" required>
                                                   <label for="imageInput">
                                                     <i class="fa fa-camera"></i>
                                                       selectionner une image
@@ -101,7 +160,7 @@
                 <div class="col-md-6 text-center">
                     <button type="button" class="btn btn-dark text-light btn-sm" (click)="clearForm()">Annuler</button>
                     &nbsp;&nbsp;          
-                    <button type="submit" class="btn btn-dark btn-sm text-light" >Ajouter</button>
+                    <button type="submit"  class="btn btn-dark btn-sm text-light" >Ajouter</button>
                   </div> 
 
               </form>
@@ -137,25 +196,33 @@
                  </tr>
                  </thead>
                  <tbody>
-                   <tr *ngFor="let item of informationList">
-                    <td>
-                      {{item.titreInfo}}
+                  <tr *ngFor="let item of informationList; let i = index">
+                    <td *ngIf="editIndex !== i">{{ item.titreInfo }}</td>
+                    <td *ngIf="editIndex === i">
+                      <input [(ngModel)]="editedItem.titreInfo" />
                     </td>
-                    <td>
-                      {{item.corpsInfo}}
-                    <td>
-                      {{item.date}}
+                
+                    <td *ngIf="editIndex !== i">{{ item.corpsInfo }}</td>
+                    <td *ngIf="editIndex === i">
+                      <input [(ngModel)]="editedItem.corpsInfo" />
                     </td>
-                    
-                     <td class="text-center">
-                      <!--<button type="button" class="btn btn-dark btn-sm text-light" ><span class="fa fa-save mr-1"></span></button>
-                      &nbsp;&nbsp;--> 
-                       <button type="button" class="btn btn-dark btn-sm text-light" ><span class="fa fa-edit mr-1"></span></button>  
-                       &nbsp;
-                       <button type="button" class="btn btn-danger btn-sm text-light" ><span class="fa fa-trash mr-1"></span></button>
-                     </td>
-                   </tr>
-                 </tbody>
+                
+                    <td>{{ item.date | date:'dd/MM/yyyy' }}</td>
+                
+                    <td class="text-center">
+                      <button *ngIf="editIndex !== i" type="button" class="btn btn-dark btn-sm text-light" (click)="onEdit(i, item)">
+                        <span class="fa fa-edit mr-1"></span>
+                      </button>
+                      <button *ngIf="editIndex === i" type="button" class="btn btn-dark btn-sm text-light" (click)="onSave(item)">
+                        <span class="fa fa-save mr-1"></span>
+                      </button>
+                      &nbsp;
+                      <button type="button" class="btn btn-danger btn-sm text-light" (click)="onDelete(item.idInformation)">
+                        <span class="fa fa-trash mr-1"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
                </table>
              </div>
            </div>

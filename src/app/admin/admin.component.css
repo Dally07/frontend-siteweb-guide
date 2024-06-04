@@ -8425,3 +8425,7 @@
       margin-bottom: 20px;
       overflow: hidden;
     }
+
+    canvas {
+      max-width: 100%;
+    }

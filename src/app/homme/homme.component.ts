@@ -5,6 +5,9 @@ import { informations } from '../admin/admin.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { url } from 'inspector';
+import { info } from 'console';
 
 @Component({
   selector: 'app-homme',
@@ -26,16 +29,20 @@ export class HommeComponent {
  
 
   constructor (private readonly apiService: ApiService, 
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private sanitizer: DomSanitizer
     ) {this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');}
   userId: number;
   dapartementId: number | null=null;
   userInfo: any;
   informationList: informations[] = [];
+  
   infoForm: informations =  {
+    idInformation: 0,
     titreInfo: '',
     corpsInfo: '',
     date: new Date(),
+    imageData: '',
     userId: 0
   }
 
@@ -61,3 +68,4 @@ export class HommeComponent {
     }
 
 }
+

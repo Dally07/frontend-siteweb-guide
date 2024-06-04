@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './guide.component.css'
 })
 export class GuideComponent {
+  image5 = 'assets/firsttime.PNG'
+
   constructor () {}
 
   currentPage: string = 'accueil';
