@@ -77,11 +77,8 @@ getjwttoken(token: string): string | null {
 
 
   //create
-  createInformation(formData: FormData, tokens: string): Observable<any> {
-    const headers  =new HttpHeaders({
-      'Authorization': `Bearer ${tokens}`
-    });
-   return this.http.post<any>(`http://localhost:3000/information` , formData, {headers})
+  createInformation(formData: FormData): Observable<any> {
+   return this.http.post<any>(`http://localhost:3000/information` , formData)
   } 
 
 
@@ -97,19 +94,20 @@ getjwttoken(token: string): string | null {
     return this.http.delete<void>(`${this.apiInfo}/${id}` );
   }
 
+  //dashboard
+  getInformationByDepartment(): Observable<any> {
+    return this.http.get(`${this.apiInfo}/departement`);
+  }
+
+  getInformationByDate(): Observable<any> {
+    return this.http.get(`${this.apiInfo}/date`);
+  }
  
 
   //logOut
 singOut(): void { 
   this.router.navigate(['/login'])
 }
-
-
-
-
-
-
-
 
 }
 

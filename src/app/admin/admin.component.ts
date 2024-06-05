@@ -12,6 +12,8 @@ import { File } from 'buffer';
 import { AuthGuard } from '../auth.guard';
 import { verify } from 'crypto';
 import { Chart, Scale } from 'chart.js';
+import { AuthService } from '../auth.service';
+import { DepartmentData, DateData } from '../models';
 
 
 export interface  informations{
@@ -33,24 +35,28 @@ export interface  informations{
 
 
 
-export class AdminComponent implements OnInit, AfterViewInit {
+export class AdminComponent implements OnInit {
 
- 
- 
+  pieChart: any;
+  lineChart: any;
+  //totalTechnologyInfo: number;
+
   isSidebarHidden = false ;
 
   infoFormModel = {
     titreInfo : '',
-    corpsInfo: ''
+    corpsInfo: '',
+    imageData: null
   };
-  selectedImage: any = null;
+  selectedImage: string | ArrayBuffer | null = null;
   generatedImage: string | null=null;
 
  
   constructor (private readonly apiService: ApiService, 
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authGuard: AuthGuard
+    private authGuard: AuthGuard,
+    private authService: AuthService
     ) {this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');}
   userId: number;
   dapartementId: number | null=null;
@@ -82,62 +88,80 @@ export class AdminComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
    this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');
    this.getinfo();
-
   
+   this.apiService.getInformationByDepartment().subscribe((departmentData: DepartmentData[]) => {
+    const departmentLabels = departmentData.map(item => item.department);
+    const departmentCounts = departmentData.map(item => item.count);
 
-  
-    }
-
-    ngAfterViewInit(): void {
-      this.createChart();
-    }
-
-    createChart(): void {
-      const canvas = document.getElementById('myChart') as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d');
-
-      
-
-     if  (ctx) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['jan','feb', 'mar'],
-          datasets: [{
-            label: 'Information ajouter par jours',
-            data: [20,56,48],
-            fill: true,
-            borderColor: 'red',
-            pointRadius: 5,
-            pointHoverRadius: 10,
-            },
+    this.pieChart = new Chart('pieCanvas', {
+      type: 'pie',
+      data: {
+        labels: departmentLabels,
+        datasets: [
           {
-            label: 'serie B',
-            data: [20,56,48],
-            borderColor: 'red',
-            pointRadius: 5,
-            pointHoverRadius: 10,
-            fill: true,
+            data: departmentCounts,
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#4BC0C0',
+              '#9966FF'
+            ]
           }
-          ]
-          
-          },
-          options: {
-            responsive: true,
-            scales: {
-              x: {
-                beginAtZero: true,
-              },
-              y: {
-                beginAtZero: true,
-              }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        }
+      }
+    });
+  });
+
+  this.apiService.getInformationByDate().subscribe((dateData: DateData[]) => {
+    const dateLabels = dateData.map(item => item.date);
+    const dateCounts = dateData.map(item => item.count);
+
+    this.lineChart = new Chart('lineCanvas', {
+      type: 'line',
+      data: {
+        labels: dateLabels,
+        datasets: [
+          {
+            data: dateCounts,
+            borderColor: '#36A2EB',
+            fill: false,
+            tension: 0.1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day'
             }
           },
-      })
-     } else {
-      console.error('tsy hita')
-     }
-    }
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  });
+}
+
+  
   
 
 
@@ -154,56 +178,45 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
 
   //create information
- async onSubmit() {
-const formData = new FormData();
-formData.append('titreInfo' , this.infoFormModel.titreInfo);
-formData.append('corpsInfo' , this.infoFormModel.corpsInfo);
-if (this.selectedImage) {
-  formData.append('imageData', this.selectedImage);
-}
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      const formData = new FormData();
+      formData.append('titreInfo', this.infoFormModel.titreInfo);
+      formData.append('corpsInfo', this.infoFormModel.corpsInfo);
+      if (this.infoFormModel.imageData) {
+        formData.append('image', this.infoFormModel.imageData);
+      }
 
-
-const tokens = localStorage.getItem('acces_token');
-
-
-if (tokens) {
-  try {
-  const decode: any = jwtDecode(tokens);
-  this.userId = decode.sub;
-
-        if (this.userId) {
-            formData.append('userId', this.userId.toString());
-           }
-
-  console.log(tokens);
-  formData.forEach((value, key) => {
-    console.log(key + ':' + value);
-  }) 
-
-  const response = await this.apiService.createInformation(formData, tokens).toPromise();
-  console.log('voici ',response)
- 
-  
-} catch(error) {
-  console.error()
-} 
-}else {
-  alert('token not found');
-}
+      this.apiService.createInformation(formData).subscribe(response => {
+        console.log('Information added successfully:', response);
+        this.clearForm(form);
+      }, error => {
+        console.error('Error adding information:', error);
+      });
+    }
   }
+
+   //image
+  handleImageChange(event: any): void {
+    const file =event.target.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }   
+  }
+
   
-
-
-
   // vider une formulaire
-  clearForm(){
-    this.infoFormModel = {
-      titreInfo: '',
-      corpsInfo: ''
+  clearForm(form: NgForm){
+    form.reset();
+    this.selectedImage = null;
+    this.infoFormModel.imageData = null
 
     }
-    this.selectedImage = null;
-  }
+  
 
 
 
@@ -241,22 +254,7 @@ if (tokens) {
   }
 
 
-  //image
-  handleImageChange(event: any): void {
-    const file =event.target.files?.[0];
-
-
-  
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.selectedImage = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }   
-  }
-
+ 
   async generateImage(): Promise<void> {
     
   }

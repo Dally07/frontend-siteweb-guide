@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'auth-token';
+  private readonly TOKEN_KEY = 'acces_token';
+  private readonly USERID = 'sub'
 
   constructor() {}
 
@@ -18,5 +19,13 @@ export class AuthService {
 
   clearToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  setUserId(sub: string): void {
+    localStorage.setItem(this.USERID, sub)
+  }
+
+  getUserId() {
+    localStorage.getItem(this.USERID)
   }
 }

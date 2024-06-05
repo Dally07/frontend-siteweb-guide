@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthGuard } from './auth.guard';
 import { AuthInterceptor } from './auth.interceptor';
+import { AuthService } from './auth.service';
 
 
 
@@ -27,7 +28,7 @@ import { AuthInterceptor } from './auth.interceptor';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule, HommeComponent, GuideComponent, MapComponent, AboutComponent, NavbarComponent, AdminComponent, LoginComponent, FooterComponent, RouterOutlet, HttpClientModule],
-  providers: [ApiService, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true} ],
+  providers: [ApiService, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthService ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
