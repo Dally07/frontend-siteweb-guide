@@ -6,6 +6,15 @@ import { map, throwError } from 'rxjs';
 import { access } from 'node:fs';
 import { Router } from '@angular/router';
 import { userInfo } from 'node:os';
+import { DepartmentData } from './models';
+import { jwtDecode } from 'jwt-decode';
+import { error } from 'node:console';
+
+
+interface DecodedToken {
+  sub: number;
+  username: string;
+}
 
 
 @Injectable({
@@ -24,6 +33,14 @@ export class ApiService {
   constructor(private readonly http: HttpClient, private readonly router: Router
    ) { }
 
+   private getDecodedToken(): DecodedToken | undefined {
+    const token = localStorage.getItem('acces_token');
+    if (token) {
+      return jwtDecode<DecodedToken>(token);
+    }
+    return undefined;
+}
+
 
   // for user
   getUsers() {
@@ -33,10 +50,10 @@ export class ApiService {
 
   //logIn
   loginUser(userData: any) {
+    console.log(userData);
     return this.http.post(`${this.apiUrl}/login`, userData)
     .pipe(
       map(response => {
-        console.log(response);
         return response;
         
        
@@ -74,6 +91,9 @@ getjwttoken(token: string): string | null {
    return this.http.get<informations[]>('http://localhost:3000/information').pipe();
   }
 
+getInformationbyuser(userId: number):Observable<number> { 
+   return this.http.get<number>(`http://localhost:3000/information/total-informations-by-user/${userId}`);
+  }
 
 
   //create
@@ -101,6 +121,36 @@ getjwttoken(token: string): string | null {
 
   getInformationByDate(): Observable<any> {
     return this.http.get(`${this.apiInfo}/date`);
+  }
+
+  getTotalInformations(): Observable<number> {
+    return this.http.get<number>(`${this.apiInfo}/total-informations`);
+  }
+
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.apiInfo}/total-users`);
+  }
+
+  getTotalInformationsByUser(userId: number) {
+    const DecodedToken = this.getDecodedToken();
+    if (DecodedToken) {
+      const userId = DecodedToken.sub;
+      console.log('userId', userId);
+      return this.http.get<number>(`${this.apiInfo}/total-informations-by-user/${userId}`);
+    } else {
+      throw new Error('no token found');
+    }
+    
+    
+  }
+
+  getCurrentUsername(): string{
+    const DecodedToken = this.getDecodedToken();
+    if (DecodedToken) {
+      return DecodedToken.username;
+    } else {
+      throw new Error('no token found');
+    }
   }
  
 

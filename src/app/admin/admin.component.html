@@ -1,5 +1,3 @@
-
-
 <main class="main">
 
 	
@@ -14,7 +12,9 @@
   
       <div id="img" class="img bg-wrap text-center py-4 bg-secondary">
         <div class="user-logo">
-          <div class="img"></div>
+          <div class="img" >
+            <img src="{{ image1 }}" alt="">
+          </div>
           <h3>CENTRE VALBIO</h3>
         </div>
       </div>
@@ -29,7 +29,7 @@
           <a href="#"><span class="fa fa-list mr-3"></span>List of Information</a>
         </li>
         <li class="active" (click)="goToPage('services')">
-          <a href="#"><span class="fa fa-cog mr-3"></span> About</a>
+          <a href="#"><span class="fa fa-message mr-3"></span>notification</a>
         </li>
         
         
@@ -45,70 +45,47 @@
     <div id="content" class="p-4 p-md-5 pt-5">
       <div *ngIf="isCurrentPage('accueil')">
         <div class="container-fluid">
+
+          <h3>Welcome {{ CurrentUsername }}</h3>
+          <br>
          
             <div class="row">
-              <div class="col-2 bg-dark text-white p-3">
-                <h6>Administration</h6>
-                <p>information:</p>
+              <div class="col-2 bg-secondary text-white p-3 border-bottom border-5 border-danger">
+                <h6>information</h6>
+                <p>{{ totalInformations }}</p>
               </div>
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
-              <div class="col-2 bg-dark text-white p-3">
-                <h6>Information Technology</h6>
-                <p>information:</p>
+              <div class="col-2 bg-secondary text-white p-3">
+                <h6>users</h6>
+                <h6>{{ totalUsers }}</h6>
               </div>
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
-              <div class="col-2 bg-dark text-white p-3">
-                <h6>Logistic</h6>
-                <p>information:</p>
+              <div class="col-2 bg-secondary text-white p-3">
+                <h6>Actif</h6>
+                <p>{{ totalInformationsByUser }}</p>
               </div>
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
-              <div class="col-2 bg-dark text-white p-3">
-                <h6>Health</h6>
-                <p>information:</p>
-              </div>
+              
               
             
           </div><br>
 
-          <div class="row">
-            <div class="col-2 bg-dark text-white p-3">
-              <h6>Direction</h6>
-              <p>information:</p>
-            </div>
-            <div class="col-1 bg-white text-white p-3">
-               
-            </div>
-            <div class="col-2 bg-dark text-white p-3">
-              <h6>Education</h6>
-              <p>information:</p>
-            </div>
-            <div class="col-1 bg-white text-white p-3">
-               
-            </div>
-            <div class="col-2 bg-dark text-white p-3">
-              <h6>Research</h6>
-              <p>information:</p>
-            </div>
-            
-          </div>
         </div>
         <hr style="border: 100px;" class="text-dark bg-dark bordered-solide"><hr class="text-dark bg-dark solid">
-        <div class="progress">
-          <div class="progress-bar bg-dark" style="width:100%"></div>
-        </div><br><br>
+        
 
        <div class="charts-container" style="display: flex; justify-content: space-around; align-items: center;">
-        <div class="chart-container" style=" width: 40%; height: 500px;">
-          <canvas id="pieCanvas"></canvas>
+        <div class="chart-container" style=" width: 35%; height: 400px;">
+          <canvas id="pieCanvas">{{pieCanvas}}</canvas>
          </div>
-         <div class="chart-container" style=" width:50%; height: 500px;">
-          <canvas id="lineCanvas"></canvas>
+         <div class="chart-container" style=" width:75%; height: 400px;">
+          <canvas id="lineCanvas">{{lineCanvas}}</canvas>
          </div>
           
        </div>

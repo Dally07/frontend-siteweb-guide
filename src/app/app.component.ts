@@ -33,6 +33,10 @@ import { AuthService } from './auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  isLoginPage: boolean = false;
+  isAdminpage: boolean = false;
+
+  
   image1 = 'assets/Dec 2 - 20.jpg'
   image2 = 'assets/IMG_5254-768X1024.jpg'
   image3 = 'assets/IMG_20230705_131609.jpg'
@@ -40,8 +44,7 @@ export class AppComponent {
   image5 = 'assets/madagascar-fall.jpg'
 
 
-  isLoginPage: boolean = false;
-  isAdminpage: boolean = false;
+
 
 
   isLoggedIn: boolean = false;

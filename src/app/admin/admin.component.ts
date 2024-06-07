@@ -1,19 +1,13 @@
-import { AfterViewInit, Component, ElementRef, OnInit, viewChild} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { parse } from 'path';
-import { error, time } from 'console';
-import { response } from 'express';
-import { jwtDecode } from 'jwt-decode';
-import { File } from 'buffer';
 import { AuthGuard } from '../auth.guard';
-import { verify } from 'crypto';
-import { Chart, Scale } from 'chart.js';
+import { Chart, Scale, PieController, TimeScale } from 'chart.js/auto';
 import { AuthService } from '../auth.service';
-import { DepartmentData, DateData } from '../models';
+import { format } from 'date-fns';
 
 
 export interface  informations{
@@ -23,6 +17,17 @@ export interface  informations{
   date: Date ;
   imageData: String;
   userId: number;
+}
+
+export interface DepartmentData{
+  nomDepartement: string;
+  nombre_informations: number;
+}
+
+
+export interface DateData {
+  date_information: Date;
+  nombre_information: number;
 }
 
 @Component({
@@ -37,9 +42,13 @@ export interface  informations{
 
 export class AdminComponent implements OnInit {
 
-  pieChart: any;
-  lineChart: any;
+  pieCanvas: any;
+  lineCanvas: any;
   //totalTechnologyInfo: number;
+  totalInformations: number = 0;
+  totalUsers: number = 0;
+  totalInformationsByUser: number | undefined;
+  CurrentUsername: string = '';
 
   isSidebarHidden = false ;
 
@@ -50,6 +59,7 @@ export class AdminComponent implements OnInit {
   };
   selectedImage: string | ArrayBuffer | null = null;
   generatedImage: string | null=null;
+  image1 = 'assets/CVB.ico'
 
  
   constructor (private readonly apiService: ApiService, 
@@ -58,6 +68,7 @@ export class AdminComponent implements OnInit {
     private authGuard: AuthGuard,
     private authService: AuthService
     ) {this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');}
+
   userId: number;
   dapartementId: number | null=null;
   userInfo: any;
@@ -86,14 +97,54 @@ export class AdminComponent implements OnInit {
 
   // read information
   ngOnInit(): void {
-   this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');
-   this.getinfo();
   
-   this.apiService.getInformationByDepartment().subscribe((departmentData: DepartmentData[]) => {
-    const departmentLabels = departmentData.map(item => item.department);
-    const departmentCounts = departmentData.map(item => item.count);
+  this.createPieChart();
+  this.createLinechart();
+  
+  this.userId = parseInt(this.activatedRoute.snapshot.paramMap.get('userId') || '0');
+  this.loadTotals();
+  this.getinfo();
+  this.getinfoByUSER();
+  
+}
 
-    this.pieChart = new Chart('pieCanvas', {
+//dashboard
+
+
+
+loadTotals(): void {
+  this.userId = this.userId;
+  console.log(this.userId);
+
+  this.apiService.getTotalInformations().subscribe(total => {
+    console.log('total info', total);
+    this.totalInformations = total;
+    
+  });
+
+  this.apiService.getTotalUsers().subscribe(total => {
+    console.log('info', total);
+    this.totalUsers = total;
+  });
+
+ this.apiService.getTotalInformationsByUser(this.userId).subscribe(total => {
+  console.log('infouser', total);  
+  this.totalInformationsByUser = total;
+  });
+ 
+ 
+  this.CurrentUsername = this.apiService.getCurrentUsername();
+  
+};
+
+
+
+createPieChart(){
+  this.apiService.getInformationByDepartment().subscribe((data: DepartmentData[]) => {
+    const departmentLabels = data.map(item => item.nomDepartement);
+    const departmentCounts = data.map(item => item.nombre_informations);
+
+    this.pieCanvas = new Chart('pieCanvas', {
       type: 'pie',
       data: {
         labels: departmentLabels,
@@ -101,11 +152,11 @@ export class AdminComponent implements OnInit {
           {
             data: departmentCounts,
             backgroundColor: [
-              '#FF6384',
-              '#36A2EB',
-              '#FFCE56',
-              '#4BC0C0',
-              '#9966FF'
+              '#2E86C1',
+              '#F39C12',
+              '#28B463',
+              '#E74C3C',
+              '#8E44AD'
             ]
           }
         ]
@@ -120,12 +171,15 @@ export class AdminComponent implements OnInit {
       }
     });
   });
+ }
 
+
+ createLinechart(){
   this.apiService.getInformationByDate().subscribe((dateData: DateData[]) => {
-    const dateLabels = dateData.map(item => item.date);
-    const dateCounts = dateData.map(item => item.count);
+    const dateLabels = dateData.map(item => format(new Date( item.date_information), 'dd/MM/yyyy'));
+    const dateCounts = dateData.map(item => item.nombre_information);
 
-    this.lineChart = new Chart('lineCanvas', {
+    this.lineCanvas = new Chart('lineCanvas', {
       type: 'line',
       data: {
         labels: dateLabels,
@@ -145,35 +199,38 @@ export class AdminComponent implements OnInit {
             display: false
           }
         },
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day'
-            }
-          },
-          y: {
-            beginAtZero: true
-          }
-        }
       }
     });
   });
+ }
+
+
+ private getRandomColors(numColors: number): string[] {
+  return Array.from({length: numColors}, () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  });
+ }
+
+ private getinfo() {
+  this.apiService.getInformation(this.userId).subscribe((data: informations[]) => {
+    this.informationList = data;
+    
+  })
 }
 
-  
-  
-
-
-    private getinfo() {
-      this.apiService.getInformation(this.userId).subscribe((data: informations[]) => {
-        this.informationList = data;
-        
-      })
-    }
+private getinfoByUSER() {
+  this.apiService.getInformationbyuser(this.userId).subscribe(data => {
+    console.log('userTotalInfo', data)
+    this.totalInformationsByUser = data;
     
-
-
+  })
+}
 
 
 
