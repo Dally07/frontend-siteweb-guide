@@ -91,8 +91,17 @@ getjwttoken(token: string): string | null {
    return this.http.get<informations[]>('http://localhost:3000/information').pipe();
   }
 
+  getSearchInfo(departementName: string): Observable<any[]>{
+    return this.http.get<any[]>(`${this.apiInfo}/search?departementName=${departementName}`)
+
+  }
+
 getInformationbyuser(userId: number):Observable<number> { 
    return this.http.get<number>(`http://localhost:3000/information/total-informations-by-user/${userId}`);
+  }
+
+  getLastInfo(): Observable<any> {
+    return this.http.get<any[]>(`${this.apiInfo}/last`)
   }
 
 

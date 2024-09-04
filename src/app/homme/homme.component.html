@@ -1,25 +1,33 @@
-
+<app-navbar></app-navbar>
 <main data-bs-spy="scroll" data-bs-target=".wrapper" data-bs-offset="100"  class="main">
 
 
-  	              <!--BODY-->
+  	<br><br><br>              <!--BODY-->
   <!--sidebar-->
   <div  class="wrapper d-flex align-items-stretch">
     <nav id="sidebar" class="bg-light" [ngClass]="{'hidden': isSidebarHidden}">
       <div class="custom-menu">
+       <!--
         <button type="button" id="sidebarCollapse"  class="btn btn-primary" (click)="toggleSideBar()" style="position: fixed;"> 
          
         </button>
+       --> 
       </div>
       <div class="img bg-wrap text-center py-4" >
         <form class="d-flex" style="margin-left: 20px;">
-          <input class="form-control me-2" type="text" placeholder="Search">
-          <button class="btn btn-secondary me-5" type="button">Search</button>
+          <input class="form-control me-2" type="text" placeholder="Search" (input)="onSearch($event)">
+          <button class="btn btn-secondary me-5" type="button" (click)="onSearchClick()">Search</button>
         </form>
-      </div>
-      <div *ngFor="let item of informationList" >
+      </div><br>
+      <h3 style="text-align: center;">All Information</h3>
+        <hr>
+      <div *ngFor="let item of informationList" class="flex-grow-1 overflow-y-auto" >
+        
         <ul class="list-unstyled components mb-2 text-dark" style="justify-content: center; " >
-          <a class="text-dark">{{item.titreInfo}}..{{item.date | date:'dd/MM/yyyy'}}</a>
+          <button type="button" class="btn btn-light">
+            <a  (click)="onInformationCLick(item)" class="text-dark">{{item.titreInfo}}..{{item.date | date:'dd/MM/yyyy'}}</a>
+          </button>
+         
         </ul>
       </div>
 
@@ -31,54 +39,30 @@
 
  <section class="text-light text-center">
   <div  class="font">
-    <h1 ><span class="badge bg-secondary ">WELCOME TO CENTRE VALBIO</span></h1>
     <br><br><br>  
   </div>
- </section><br><br><br>
+ </section>
 
 
- <div class="container-fluid mt-3 text-center">
-  <h1>Nos Evenement recentes</h1  >
-  <p>The following example shows how to create a basic carousel with indicators and controls.</p>
+<hr class="bg-dark">
+<br><br><br>
+<div>
+  <h2>Notre derniere Information</h2>
+</div>
+<div  class="card mt-3">
+<div class="card-header">
+ <h2 class="text-center">{{titreInfo}}</h2>
+ <p>{{corpsInfo}}</p>
+</div>
+<div class="card-body">
+<img src="{{image5}}" class="card-img-top">
+</div>
 </div>
 
 
-
-  <!-- Carousel -->
-<div id="demo" class="carousel slide" data-bs-ride="carousel" >
-
-  <!-- Indicators/dots -->
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-  </div>
-  
-  <!-- The slideshow/carousel -->
-  <div class="carousel-inner" id="carousel">
-    <div  class="carousel-item active" id="carousel"  >
-      <img src="{{ image5 }}" class="img-fluid" style="width:100%">
-    </div>
-    <div  class="carousel-item" id="carousel" >
-      <img src="{{ image3 }}"  class="img-fluid" style="width:100%">
-    </div>
-    <div  class="carousel-item" id="carousel" >
-      <img src="{{ image4 }}" class="img-fluid" style="width:100%">
-    </div>
-  </div>
-  
-  <!-- Left and right controls/icons -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-</div>
 
 <div class="container-fluid mt-3">
-  <h3>Toutes Nos Evenement</h3>
-  <p>The following example shows how to create a basic carousel with indicators and controls.</p>
+  <h2>Toutes Nos Evenement</h2>
 </div>
 
 
@@ -86,7 +70,7 @@
 <div class="row row-cols-2 row-cols-xxl g-4">
   <div class="col col-lg-4 col-md-10 "*ngFor="let item of informationList">
     <div class="card">
-      <img [src]="item.imageData" class="card-img-top"/>
+      <img src="{{image5}}" class="card-img-top"/>
       <div class="card-body">
         <h5 class="card-title">{{item.titreInfo}}</h5>
         <p class="card-text">
@@ -98,7 +82,7 @@
 </div>
 </div>
                 
-
+<app-footer></app-footer>
 </div>
 
 

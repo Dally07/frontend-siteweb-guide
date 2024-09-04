@@ -46,6 +46,7 @@
   
   body {
     margin: 0;
+    flex-direction: column;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 1rem;
     font-weight: 400;
@@ -8168,17 +8169,29 @@
     background-position: center center; }
   
   .wrapper {
-    width: 100%; }
+    display: flex;
+    flex: 1;
+    overflow-y: auto; }
+
+   footer {
+    padding: 20px;
+   }
   
   #sidebar {
-    min-width: 300px;
+    position: fixed;
+    overflow-y: auto;
+    top: 50px;
+    left: 0;
+    min-width: 200px;
     max-width: 300px;
+    min-height: none;
+    max-height: 100vh;
     background: #32373d;
     color: #fff;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
-    position: relative; }
+  z-index: 1000; }
     #sidebar .h6 {
       color: #fff; }
     #sidebar.active {
@@ -8277,6 +8290,13 @@
         #sidebar .custom-menu .btn.btn-primary:after {
           content: "\f054";
           left: 2px; }
+
+          #content{
+            margin-left: 300px;
+            flex: 1;
+            padding: 20px;
+            transition: margin-left 0.3s;
+          }
   
   .bg-wrap {
     width: 100%;
@@ -8380,7 +8400,7 @@
 .font{
   width: 100%;
      height: 60vh;
-     background: url('../../valbio.jpg');
+     background: url('../../assets/welcome.PNG');
      background-position: center;
      background-size: cover;
     /*background-attachment: fixed;*/

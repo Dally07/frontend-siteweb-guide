@@ -28,10 +28,12 @@
         <li class="active" (click)="goToPage('liste-eleves')">
           <a href="#"><span class="fa fa-list mr-3"></span>List of Information</a>
         </li>
-        <li class="active" (click)="goToPage('services')">
-          <a href="#"><span class="fa fa-message mr-3"></span>notification</a>
-        </li>
         
+        <!--
+<li class="active" (click)="goToPage('services')">
+          <a href="#"><span class="fa fa-message mr-3"></span>notification</a>
+        </li>>
+        -->
         
         <li class="active" >
           <a href="#" (click)="logout()"><span class="fa fa-sign-out mr-3"></span>logOut</a>
@@ -51,23 +53,20 @@
          
             <div class="row">
               <div class="col-2 bg-secondary text-white p-3 border-bottom border-5 border-danger">
-                <h6>information</h6>
-                <p>{{ totalInformations }}</p>
+                <h6>informations</h6>
+                <p>Total: {{ totalInformations }}</p>
               </div>
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
               <div class="col-2 bg-secondary text-white p-3">
                 <h6>users</h6>
-                <h6>{{ totalUsers }}</h6>
+                <h6>Total: {{ totalUsers }}</h6>
               </div>
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
-              <div class="col-2 bg-secondary text-white p-3">
-                <h6>Actif</h6>
-                <p>{{ totalInformationsByUser }}</p>
-              </div>
+              
               <div class="col-1 bg-white text-white p-3">
                  
               </div>
